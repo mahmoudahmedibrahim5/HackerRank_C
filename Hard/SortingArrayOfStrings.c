@@ -4,6 +4,7 @@
 
 #define True 1
 #define False 0
+
 /* Sort ascending */
 int lexicographic_sort(const char* a, const char* b) {
     if (strcmp(a, b) > 0) {
@@ -11,6 +12,7 @@ int lexicographic_sort(const char* a, const char* b) {
     }
     return True;
 }
+
 /* Sort descending */
 int lexicographic_sort_reverse(const char* a, const char* b) {
      if (strcmp(a, b) < 0) {
@@ -18,17 +20,20 @@ int lexicographic_sort_reverse(const char* a, const char* b) {
     }
     return True;
 }
+
 /* Sort ascending by number of distinct_characters */ /* if equal sort ascending */
 int sort_by_number_of_distinct_characters(const char* a, const char* b) {
+    int numA=0, numB=0, flag = 0;
     // numA, numB are number of distinct characters in a and b
     // flag defines wether this character is distinct(0) or repeated(1)
-    int numA=0, numB=0, flag = 0;
-    for(int k=0; k<strlen(a); k++)
+    
+    /* Calculate number of distinct characters in a */
+    for(int i=0; i<strlen(a); i++)
     {
         flag = 0;
-        for(int l=0; l<k; l++)
+        for(int j=0; j<i; j++)
         { // check if this character is found before
-            if(*(a+k) == *(a+l))
+            if(*(a+i) == *(a+j))
             {
                 flag = 1;
                 break;
@@ -36,12 +41,14 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
         }
         if(flag == 0)numA++;
     }
-    for(int k=0; k<strlen(b); k++)
+    
+    /* Calculate number of distinct characters in b */
+    for(int i=0; i<strlen(b); i++)
     {
         flag = 0;
-        for(int l=0; l<k; l++)
+        for(int j=0; j<i; j++)
         {
-            if(*(b+k) == *(b+l))
+            if(*(b+i) == *(b+j))
             {
                  flag = 1;
                  break;
@@ -49,6 +56,7 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
         }
         if(flag == 0)numB++;
     }
+    
     if(numA > numB)
     {
         return False;
@@ -58,8 +66,10 @@ int sort_by_number_of_distinct_characters(const char* a, const char* b) {
         if (strcmp(a, b) > 0) 
             return False;
     }
+    
     return True;
 }
+
 /* Sort by string length */ /* if equal sort ascending */
 int sort_by_length(const char* a, const char* b) {
     if(strlen(a) > strlen(b))
@@ -71,17 +81,23 @@ int sort_by_length(const char* a, const char* b) {
 
 void string_sort(char** arr,const int len,int (*cmp_func)(const char* a, const char* b)){
     const char* tmp;
-    for(int i=0; i<len; i++)
+    /* Bubble sort */
+    int cntr; // counter for number of swaps
+    for(int i=0; i<len-1; i++)
     {
-        for(int j=0; j<len-1; j++)
+        cntr = 0;
+        for(int j=0; j<len-1 - i; j++)
         {
             if(cmp_func(*(arr+j), *(arr+j+1)) == False)
-            {
+            {   // Swap
                 tmp = *(arr+j);
                 *(arr+j)= *(arr+j+1);
                 *(arr+j+1) = tmp;
+                cntr++;
             }
         }
+        if (cntr == 0) // if no swaps happened then list is sorted
+            break;
     }
 }
 
